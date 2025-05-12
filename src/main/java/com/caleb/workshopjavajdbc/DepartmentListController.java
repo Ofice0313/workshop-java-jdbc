@@ -1,6 +1,6 @@
 package com.caleb.workshopjavajdbc;
 
-import com.caleb.workshopjavajdbc.entities.Department;
+import com.caleb.workshopjavajdbc.model.entities.Department;
 import com.caleb.workshopjavajdbc.model.services.DepartmentService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
