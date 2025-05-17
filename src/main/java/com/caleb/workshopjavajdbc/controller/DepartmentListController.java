@@ -44,7 +44,8 @@ public class DepartmentListController implements Initializable {
     @FXML
     public void onBtNewAction(ActionEvent event) throws IOException {
         Stage parentStage = Utils.currentStage(event);
-        createDialogForm("/com/caleb/workshopjavajdbc/DepartmentForm.fxml", parentStage);
+        Department obj = new Department();
+        createDialogForm(obj, "/com/caleb/workshopjavajdbc/DepartmentForm.fxml", parentStage);
     }
 
     public void setDepartmentService(DepartmentService service){
@@ -73,9 +74,13 @@ public class DepartmentListController implements Initializable {
         departmentTableView.setItems(observableList);
     }
 
-    private void createDialogForm(String absoluteName, Stage parentStage) throws IOException {
+    private void createDialogForm(Department obj, String absoluteName, Stage parentStage) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
         Pane pane = loader.load();
+
+        DepartmentFormController controller = loader.getController();
+        controller.setDepartment(obj);
+        controller.updateFormData();
 
         Stage dialogStage = new Stage();
         dialogStage.setTitle("Enter Department data");
