@@ -1,5 +1,6 @@
-package com.caleb.workshopjavajdbc;
+package com.caleb.workshopjavajdbc.controller;
 
+import com.caleb.workshopjavajdbc.HelloApplication;
 import com.caleb.workshopjavajdbc.gui.util.Alerts;
 import com.caleb.workshopjavajdbc.model.services.DepartmentService;
 import javafx.fxml.FXML;
@@ -8,7 +9,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
@@ -34,7 +34,7 @@ public class MainViewController implements Initializable {
 
     @FXML
     public void onMenuItemDepartmentAction(){
-        loadView("DepartmentList.fxml", (DepartmentListController controller) -> {
+        loadView("/com/caleb/workshopjavajdbc/DepartmentList.fxml", (DepartmentListController controller) -> {
             controller.setDepartmentService(new DepartmentService());
             controller.updateTableView();
         });
@@ -42,7 +42,7 @@ public class MainViewController implements Initializable {
 
     @FXML
     public void onMenuItemAboutAction(){
-        loadView("About.fxml", x -> {});
+        loadView("/com/caleb/workshopjavajdbc/About.fxml", x -> {});
     }
 
     @Override
@@ -69,7 +69,4 @@ public class MainViewController implements Initializable {
             Alerts.showAlert("IO Exception", "Error loading view", e.getMessage(), Alert.AlertType.ERROR);
         }
     }
-
-
-
 }

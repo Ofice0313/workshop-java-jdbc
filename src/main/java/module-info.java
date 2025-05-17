@@ -16,4 +16,6 @@ module com.caleb.workshopjavajdbc {
     opens com.caleb.workshopjavajdbc to javafx.fxml;
     exports com.caleb.workshopjavajdbc;
     opens com.caleb.workshopjavajdbc.model.entities to javafx.base;
+    exports com.caleb.workshopjavajdbc.controller;
+    opens com.caleb.workshopjavajdbc.controller to javafx.fxml;
 }
