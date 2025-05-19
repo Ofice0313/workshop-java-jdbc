@@ -1,6 +1,7 @@
 package com.caleb.workshopjavajdbc.controller;
 
 import com.caleb.workshopjavajdbc.HelloApplication;
+import com.caleb.workshopjavajdbc.gui.listeners.DataChangeListener;
 import com.caleb.workshopjavajdbc.gui.util.Alerts;
 import com.caleb.workshopjavajdbc.gui.util.Utils;
 import com.caleb.workshopjavajdbc.model.entities.Department;
@@ -26,7 +27,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class DepartmentListController implements Initializable {
+public class DepartmentListController implements Initializable, DataChangeListener {
 
     private DepartmentService departmentService;
 
@@ -81,6 +82,7 @@ public class DepartmentListController implements Initializable {
         DepartmentFormController controller = loader.getController();
         controller.setDepartment(obj);
         controller.setDepartmentService(new DepartmentService());
+        controller.subscribeDataChangeListener(this);
         controller.updateFormData();
 
         Stage dialogStage = new Stage();
@@ -90,5 +92,10 @@ public class DepartmentListController implements Initializable {
         dialogStage.initOwner(parentStage);
         dialogStage.initModality(Modality.WINDOW_MODAL);
         dialogStage.showAndWait();
+    }
+
+    @Override
+    public void onDataChanged() {
+        updateTableView();
     }
 }
