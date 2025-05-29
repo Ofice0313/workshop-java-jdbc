@@ -94,22 +94,22 @@ public class SellerListController implements Initializable, DataChangeListener {
     }
 
     private void createDialogForm(Seller obj, String absoluteName, Stage parentStage) throws IOException {
-//        FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
-//        Pane pane = loader.load();
-//
-//        SellerFormController controller = loader.getController();
-//        controller.setSeller(obj);
-//        controller.setSellerService(new SellerService());
-//        controller.subscribeDataChangeListener(this);
-//        controller.updateFormData();
-//
-//        Stage dialogStage = new Stage();
-//        dialogStage.setTitle("Enter Seller data");
-//        dialogStage.setScene(new Scene(pane));
-//        dialogStage.setResizable(false);
-//        dialogStage.initOwner(parentStage);
-//        dialogStage.initModality(Modality.WINDOW_MODAL);
-//        dialogStage.showAndWait();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
+        Pane pane = loader.load();
+
+        SellerFormController controller = loader.getController();
+        controller.setSeller(obj);
+        controller.setSellerService(new SellerService());
+        controller.subscribeDataChangeListener(this);
+        controller.updateFormData();
+
+        Stage dialogStage = new Stage();
+        dialogStage.setTitle("Enter Seller data");
+        dialogStage.setScene(new Scene(pane));
+        dialogStage.setResizable(false);
+        dialogStage.initOwner(parentStage);
+        dialogStage.initModality(Modality.WINDOW_MODAL);
+        dialogStage.showAndWait();
     }
 
     @Override
