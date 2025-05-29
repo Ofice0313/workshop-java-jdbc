@@ -3,6 +3,7 @@ package com.caleb.workshopjavajdbc.controller;
 import com.caleb.workshopjavajdbc.HelloApplication;
 import com.caleb.workshopjavajdbc.gui.util.Alerts;
 import com.caleb.workshopjavajdbc.model.services.DepartmentService;
+import com.caleb.workshopjavajdbc.model.services.SellerService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -29,7 +30,10 @@ public class MainViewController implements Initializable {
 
     @FXML
     public void onMenuItemSellerAction(){
-        System.out.println("onMenuItemSellerAction");
+        loadView("/com/caleb/workshopjavajdbc/SellerList.fxml", (SellerListController controller) -> {
+            controller.setSellerService(new SellerService());
+            controller.updateTableView();
+        });
     }
 
     @FXML
