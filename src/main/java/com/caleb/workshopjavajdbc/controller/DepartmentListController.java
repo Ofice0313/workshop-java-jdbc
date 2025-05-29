@@ -6,6 +6,7 @@ import com.caleb.workshopjavajdbc.gui.util.Alerts;
 import com.caleb.workshopjavajdbc.gui.util.Utils;
 import com.caleb.workshopjavajdbc.model.entities.Department;
 import com.caleb.workshopjavajdbc.model.services.DepartmentService;
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -13,10 +14,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
@@ -37,6 +35,8 @@ public class DepartmentListController implements Initializable, DataChangeListen
     private TableColumn<Department, Integer> tableColumnId;
     @FXML
     private TableColumn<Department, String> tableColumnName;
+    @FXML
+    private TableColumn<Department, Department> tableColumnEDIT;
     @FXML
     private Button buttonNew;
 
@@ -73,6 +73,7 @@ public class DepartmentListController implements Initializable, DataChangeListen
         List<Department> list = departmentService.findAll();
         observableList = FXCollections.observableArrayList(list);
         departmentTableView.setItems(observableList);
+        initEditButtons();
     }
 
     private void createDialogForm(Department obj, String absoluteName, Stage parentStage) throws IOException {
@@ -97,5 +98,33 @@ public class DepartmentListController implements Initializable, DataChangeListen
     @Override
     public void onDataChanged() {
         updateTableView();
+    }
+
+    private void initEditButtons(){
+        tableColumnEDIT.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue()));
+        tableColumnEDIT.setCellFactory(param -> new TableCell<Department, Department>(){
+            private final Button button = new Button("edit");
+
+            @Override
+            protected void updateItem(Department item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if(item == null){
+                    setGraphic(null);
+                    return;
+                }
+
+                setGraphic(button);
+                button.setOnAction(
+                        event -> {
+                            try {
+                                createDialogForm(item,
+                                        "/com/caleb/workshopjavajdbc/DepartmentForm.fxml", Utils.currentStage(event));
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        });
+            }
+        });
     }
 }
