@@ -5,13 +5,18 @@ import com.caleb.workshopjavajdbc.gui.listeners.DataChangeListener;
 import com.caleb.workshopjavajdbc.gui.util.Alerts;
 import com.caleb.workshopjavajdbc.gui.util.Constraints;
 import com.caleb.workshopjavajdbc.gui.util.Utils;
+import com.caleb.workshopjavajdbc.model.entities.Department;
 import com.caleb.workshopjavajdbc.model.entities.Seller;
 import com.caleb.workshopjavajdbc.model.exceptions.ValidationException;
+import com.caleb.workshopjavajdbc.model.services.DepartmentService;
 import com.caleb.workshopjavajdbc.model.services.SellerService;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.util.Callback;
 
 import java.net.URL;
 import java.time.LocalDate;
@@ -23,6 +28,8 @@ public class SellerFormController implements Initializable {
     private Seller entity;
 
     private SellerService SellerService;
+
+    private DepartmentService departmentService;
 
     private List<DataChangeListener> dataChangeListeners = new ArrayList<>();
 
@@ -38,6 +45,9 @@ public class SellerFormController implements Initializable {
     private DatePicker datePickerBirthDate;
     @FXML
     private TextField txtBaseSalary;
+
+    @FXML
+    private ComboBox<Department> departmentComboBox;
     @FXML
     private Label labelErrorEmail;
     @FXML
@@ -49,12 +59,15 @@ public class SellerFormController implements Initializable {
     @FXML
     private Button btCancel;
 
+    private ObservableList<Department> departmentObservableList;
+
     public void setSeller(Seller entity){
         this.entity = entity;
     }
 
-    public void setSellerService(SellerService service){
-        this.SellerService = service;
+    public void setService(SellerService sellerService, DepartmentService departmentService){
+        this.SellerService = sellerService;
+        this.departmentService = departmentService;
     }
 
     public void subscribeDataChangeListener(DataChangeListener listener){
@@ -124,6 +137,7 @@ public class SellerFormController implements Initializable {
         Constraints.setTextFieldDouble(txtBaseSalary);
         Constraints.setTextFieldMaxLength(txtEmail, 60);
         Utils.formatDatePicker(datePickerBirthDate, "dd/MM/yyyy");
+        initializeComboBoxDepartment();
     }
 
     public void updateFormData(){
@@ -138,6 +152,20 @@ public class SellerFormController implements Initializable {
         if(entity.getBirthDate() != null){
             datePickerBirthDate.setValue(LocalDate.ofInstant(entity.getBirthDate().toInstant(), ZoneId.systemDefault()));
         }
+        if(entity.getDepartment() == null){
+            departmentComboBox.getSelectionModel().selectFirst();
+        }else {
+            departmentComboBox.setValue(entity.getDepartment());
+        }
+    }
+
+    public void loadAssociatedObjects(){
+        if(departmentService == null){
+            throw new IllegalStateException("DepartmentService was null!");
+        }
+        List<Department> departmentList = departmentService.findAll();
+        departmentObservableList = FXCollections.observableArrayList(departmentList);
+        departmentComboBox.setItems(departmentObservableList);
     }
 
     private void setErrorMessages(Map<String, String> errors){
@@ -147,5 +175,17 @@ public class SellerFormController implements Initializable {
             labelErrorName.setText(errors.get("name"));
             labelErrorName.setVisible(true);
         }
+    }
+
+    private void initializeComboBoxDepartment(){
+        Callback<ListView<Department>, ListCell<Department>> factory = lv -> new ListCell<Department>(){
+            @Override
+            protected void updateItem(Department item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty ? "" : item.getName());
+            }
+        };
+        departmentComboBox.setCellFactory(factory);
+        departmentComboBox.setButtonCell(factory.call(null));
     }
 }

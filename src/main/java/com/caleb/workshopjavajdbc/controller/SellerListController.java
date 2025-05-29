@@ -6,6 +6,7 @@ import com.caleb.workshopjavajdbc.gui.listeners.DataChangeListener;
 import com.caleb.workshopjavajdbc.gui.util.Alerts;
 import com.caleb.workshopjavajdbc.gui.util.Utils;
 import com.caleb.workshopjavajdbc.model.entities.Seller;
+import com.caleb.workshopjavajdbc.model.services.DepartmentService;
 import com.caleb.workshopjavajdbc.model.services.SellerService;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
@@ -99,7 +100,8 @@ public class SellerListController implements Initializable, DataChangeListener {
 
         SellerFormController controller = loader.getController();
         controller.setSeller(obj);
-        controller.setSellerService(new SellerService());
+        controller.setService(new SellerService(), new DepartmentService());
+        controller.loadAssociatedObjects();
         controller.subscribeDataChangeListener(this);
         controller.updateFormData();
 
