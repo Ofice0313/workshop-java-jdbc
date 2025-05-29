@@ -13,6 +13,7 @@ module com.caleb.workshopjavajdbc {
     requires com.almasb.fxgl.all;
     requires mysql.connector.j;
 
+
     opens com.caleb.workshopjavajdbc to javafx.fxml;
     exports com.caleb.workshopjavajdbc;
     opens com.caleb.workshopjavajdbc.model.entities to javafx.base;

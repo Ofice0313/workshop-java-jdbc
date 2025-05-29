@@ -11,7 +11,8 @@ import com.caleb.workshopjavajdbc.db.DbException;
 import com.caleb.workshopjavajdbc.model.dao.SellerDao;
 import com.caleb.workshopjavajdbc.model.entities.Department;
 import com.caleb.workshopjavajdbc.model.entities.Seller;
-import com.mysql.jdbc.*;
+import com.mysql.cj.jdbc.Driver;
+
 
 public class SellerDaoJDBC implements SellerDao {
 
